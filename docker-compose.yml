@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./.docker/conf/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    ports:
+      - 600:80
+    restart: always
+    depends_on:
+      - php
+      - db
+
+  php:
+    build: .docker/conf/php
+    restart: always
+    volumes:
+      - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - .:/var/www/html
+    links:
+      - mail
+
+  db:
+    image: postgres:10.1
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/
+      - ./.docker/postgresql-data:/var/lib/postgresql/data
+
+  mail:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - '${INTERFACE}:8026:8025'
