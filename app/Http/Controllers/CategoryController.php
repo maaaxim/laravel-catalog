@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +19,7 @@ class CategoryController extends Controller
     {
 		$categories = DB::table('categories')
 			->paginate(10); // @TODO magic-number
-		return response($categories);
+		return response(CategoryResource::collection($categories));
     }
 
     /**
@@ -71,7 +73,7 @@ class CategoryController extends Controller
 	 */
     public function products(Category $category)
 	{
-		$response = $category->products;
-		return response($response);
+		$products = $category->products;
+		return response(ProductResource::collection($products));
 	}
 }
