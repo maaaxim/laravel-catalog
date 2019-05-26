@@ -13,18 +13,18 @@ class CreateCategoriesProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories_products', function (Blueprint $table) {
+        Schema::create('category_product', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('category');
-            $table->integer('product');
+            $table->integer('category_id');
+            $table->integer('product_id');
 
-			$table->foreign('category')
+			$table->foreign('category_id')
 				->references('id')
 				->on('categories')
 				->onDelete('cascade');
 
-			$table->foreign('product')
+			$table->foreign('product_id')
 				->references('id')
 				->on('products')
 				->onDelete('cascade');

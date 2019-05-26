@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+		$categories = DB::table('categories')
+			->paginate(10); // @TODO magic-number
+		return response($categories);
     }
 
     /**
@@ -64,9 +67,11 @@ class CategoryController extends Controller
 
 	/**
 	 * @param Category $category
+	 * @return \Illuminate\Http\Response
 	 */
     public function products(Category $category)
 	{
-		//
+		$response = $category->products;
+		return response($response);
 	}
 }
