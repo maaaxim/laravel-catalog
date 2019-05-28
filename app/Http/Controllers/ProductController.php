@@ -59,7 +59,7 @@ class ProductController extends Controller
     public function sellItem(Product $product)
 	{
 		$newAmount = $product->amount - 1;
-		dispatch(new EmailNotifications($product, $newAmount));
+		dispatch(new EmailNotifications($product, true));
 		if($product->amount > 0){
 			$product->amount = $newAmount;
 			$product->save();
@@ -74,7 +74,8 @@ class ProductController extends Controller
 	public function returnItem(Product $product)
 	{
 		$newAmount = $product->amount + 1;
-		dispatch(new EmailNotifications($product, $newAmount));
+		dispatch(new EmailNotifications($product, false));
+		$product->amount = $newAmount;
 		$product->save();
 		return response(new ProductResource($product));
 	}

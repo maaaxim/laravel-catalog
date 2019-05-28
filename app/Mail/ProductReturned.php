@@ -37,7 +37,7 @@ class ProductReturned extends Mailable
      */
     public function build()
     {
-        return $this->view('email.product_sold')
+        return $this->view('email.product_returned')
 			->withProduct($this->product);
     }
 }

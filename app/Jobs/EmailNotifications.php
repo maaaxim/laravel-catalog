@@ -24,18 +24,18 @@ class EmailNotifications implements ShouldQueue
 	/**
 	 * @var
 	 */
-    protected $newAmount;
+    protected $sold;
 
 	/**
 	 * Create a new job instance.
 	 *
 	 * @param Product $product
-	 * @param int $newAmount
+	 * @param bool $sold
 	 */
-    public function __construct(Product $product, int $newAmount)
+    public function __construct(Product $product, bool $sold)
     {
         $this->product = $product;
-        $this->newAmount = $newAmount;
+        $this->sold = $sold;
     }
 
     /**
@@ -45,10 +45,12 @@ class EmailNotifications implements ShouldQueue
      */
     public function handle()
     {
-		if($this->newAmount > $this->product->amount){
+		if($this->sold !== true){
 			$email = new ProductReturned($this->product);
+			echo "returned";
 		} else {
 			$email = new ProductSold($this->product);
+			echo "sold";
 		}
 		$recipient['email'] = 'maxim@test.ru'; // @TODO hardcode
 		Mail::to($recipient['email'])->send($email);
