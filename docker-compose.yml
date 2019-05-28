@@ -11,7 +11,6 @@ services:
     restart: always
     depends_on:
       - php
-      - db
 
   php:
     build: .docker/conf/php
@@ -21,6 +20,8 @@ services:
       - .:/var/www/html
     links:
       - mail
+      - redis
+      - db
 
   db:
     image: postgres:10.1
@@ -40,3 +41,6 @@ services:
     restart: always
     ports:
       - '${INTERFACE}:8026:8025'
+
+  redis:
+      image: redis
