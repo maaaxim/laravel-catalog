@@ -42,6 +42,8 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Category"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -66,6 +68,8 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Category"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -84,6 +88,8 @@ paths:
         description: "Category id"
         required: true
         type: "integer"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -122,6 +128,8 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Product"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -146,6 +154,8 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Product"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -164,6 +174,8 @@ paths:
         description: "Product id"
         required: true
         type: "integer"
+      security:
+      - grantTypePassword: []
       responses:
         405:
           description: "Invalid input"
@@ -233,3 +245,9 @@ definitions:
       amount:
         type: "integer"
         format: "int64"
+securityDefinitions:
+  grantTypePassword:
+    type: oauth2
+    scopes:
+    flow: password
+    tokenUrl: http://localhost:600/oauth/token
