@@ -14,10 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::get('categories/{category}/products', 'CategoryController@products');
-
-//Route::get('products/{product}/sell', 'ProductController@sell');
-//Route::get('products/{product}/return', 'ProductController@return');
-
+Route::get('products/{product}/sell', 'ProductController@sellItem');
+Route::get('products/{product}/return', 'ProductController@returnItem');
 Route::apiResource('categories', 'CategoryController')->only(['index']);
 
 Route::group(['middleware' => 'auth:api'], function(){

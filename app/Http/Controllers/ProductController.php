@@ -2,21 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -25,18 +16,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
+		$product = Product::create($request->all());
+		return response(new ProductResource($product));
     }
 
     /**
@@ -48,33 +29,49 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+		$product->name = $request->name;
+		$product->amount = $request->amount;
+		$product->save();
+		return response(new ProductResource($product));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+		$product = Product::find($id);
+		if(!$product){
+			return response("Product not found");
+		}
+		$product->delete();
+		return response(new ProductResource($product));
     }
 
 	/**
 	 * @param Product $product
+	 * @return \Illuminate\Http\Response
 	 */
     public function sellItem(Product $product)
 	{
-		//
+		if($product->amount > 0){
+			$product->amount = $product->amount - 1;
+			$product->save();
+		}
+		return response(new ProductResource($product));
 	}
 
 	/**
 	 * @param Product $product
+	 * @return \Illuminate\Http\Response
 	 */
 	public function returnItem(Product $product)
 	{
-		//
+		$product->amount = $product->amount + 1;
+		$product->save();
+		return response(new ProductResource($product));
 	}
 }
