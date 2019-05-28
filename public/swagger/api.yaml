@@ -46,24 +46,6 @@ paths:
         405:
           description: "Invalid input"
   "/categories/{categoryId}":
-    get:
-      tags:
-      - "category"
-      summary: "Get info"
-      description: ""
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "path"
-        name: "categoryId"
-        description: "Category id"
-        required: true
-        type: "integer"
-      responses:
-        405:
-          description: "Invalid input"
     put:
       tags:
       - "category"
@@ -125,18 +107,6 @@ paths:
         405:
           description: "Invalid input"
   "/products":
-    get:
-      tags:
-      - "product"
-      summary: "Returns products collection"
-      description: ""
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      responses:
-        405:
-          description: "Invalid input"
     post:
       tags:
       - "product"
@@ -156,24 +126,6 @@ paths:
         405:
           description: "Invalid input"
   "/products/{productId}":
-    get:
-      tags:
-      - "product"
-      summary: "Get info"
-      description: ""
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "path"
-        name: "productId"
-        description: "Product id"
-        required: true
-        type: "integer"
-      responses:
-        405:
-          description: "Invalid input"
     put:
       tags:
       - "product"
