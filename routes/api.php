@@ -13,13 +13,23 @@ use Illuminate\Http\Request;
 |
 */
 
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+//
+//Route::apiResource('categories', 'CategoryController')->only(['index', 'store', 'show', 'update', 'delete']);
+//Route::get('categories/{category}/products', 'CategoryController@products');
+//
+//Route::apiResource('products', 'ProductController')->only(['index', 'store', 'show', 'update', 'delete']);
+//Route::get('products/{product}/sell', 'ProductController@sell');
+//Route::get('products/{product}/return', 'ProductController@return');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
-Route::apiResource('categories', 'CategoryController')->only(['index', 'store', 'show', 'update', 'delete']);
-Route::get('categories/{category}/products', 'CategoryController@products');
-
-Route::apiResource('products', 'ProductController')->only(['index', 'store', 'show', 'update', 'delete']);
-Route::get('products/{product}/sell', 'ProductController@sell');
-Route::get('products/{product}/return', 'ProductController@return');
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::post('details', 'API\UserController@details');
+});
