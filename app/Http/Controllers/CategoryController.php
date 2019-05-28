@@ -30,19 +30,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$category = Category::create($request->all());
+		return response(new CategoryResource($category));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -53,18 +44,26 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+		$category->name = $request->name;
+		$category->save();
+		return response(new CategoryResource($category));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $category)
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 * @throws \Exception
+	 */
+    public function destroy(int $id)
     {
-        //
+    	$category = Category::find($id);
+    	if(!$category){
+			return response("Category not found");
+		}
+		$category->delete();
+		return response(new CategoryResource($category));
     }
 
 	/**
