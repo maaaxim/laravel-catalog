@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
+use App\Jobs\EmailNotifications;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -57,8 +58,10 @@ class ProductController extends Controller
 	 */
     public function sellItem(Product $product)
 	{
+		$newAmount = $product->amount - 1;
+		dispatch(new EmailNotifications($product, $newAmount));
 		if($product->amount > 0){
-			$product->amount = $product->amount - 1;
+			$product->amount = $newAmount;
 			$product->save();
 		}
 		return response(new ProductResource($product));
@@ -70,7 +73,8 @@ class ProductController extends Controller
 	 */
 	public function returnItem(Product $product)
 	{
-		$product->amount = $product->amount + 1;
+		$newAmount = $product->amount + 1;
+		dispatch(new EmailNotifications($product, $newAmount));
 		$product->save();
 		return response(new ProductResource($product));
 	}
