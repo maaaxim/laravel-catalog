@@ -21,4 +21,4 @@
 2. паспорт
 3. php artisan queue:table
 4. php artisan migrate
-5. запуск демона
+5. docker-compose exec --user 1000 php php artisan queue:listen
