@@ -43,4 +43,5 @@ services:
       - '${INTERFACE}:8026:8025'
 
   redis:
+      restart: always
       image: redis
