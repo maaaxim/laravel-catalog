@@ -22,3 +22,5 @@
 3. php artisan queue:table
 4. php artisan migrate
 5. docker-compose exec --user 1000 php php artisan queue:listen
+6. docker-compose exec --user 1000 php php artisan queue:show 0 -- -1
+7. docker-compose exec --user 1000 php php artisan user:register vasia vasia vasia
