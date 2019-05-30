@@ -6,26 +6,11 @@ use App\Category;
 use App\Product;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
-use \App\User;
+use Tests\HasAuthControllerTest;
 
-class CategoryControllerTest extends TestCase
+class CategoryControllerTest extends HasAuthControllerTest
 {
 	use DatabaseMigrations;
-
-	protected $authorizedHeader;
-
-	public function setUp(): void
-	{
-		parent::setUp();
-		$this->artisan('passport:install');
-		$user = factory(User::class)->create();
-		$token = $user->createToken('TestToken')->accessToken;
-		$header = [];
-		$header['Accept'] = 'application/json';
-		$header['Authorization'] = 'Bearer '.$token;
-		$this->authorizedHeader = $header;
-	}
 
 	public function test_can_get_categories()
 	{
