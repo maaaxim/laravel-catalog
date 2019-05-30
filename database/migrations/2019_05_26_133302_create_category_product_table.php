@@ -29,6 +29,8 @@ class CreateCategoryProductTable extends Migration
 				->on('products')
 				->onDelete('cascade');
 
+			$table->index(['category_id', 'product_id']);
+
             $table->timestamps();
         });
     }
