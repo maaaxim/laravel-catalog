@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Jobs\EmailNotifications;
 use App\Product;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\HasAuthControllerTest;
+use Illuminate\Support\Facades\Queue;
 
 class ProductControllerTest extends HasAuthControllerTest
 {
@@ -115,5 +117,27 @@ class ProductControllerTest extends HasAuthControllerTest
 		$response = $this->json('GET', '/api/products/' . $product->id . '/sell', []);
 		$response->assertStatus(200);
 		$response->assertExactJson(['id' => $product->id, 'name' => 'Test product', 'amount' => 0]);
+	}
+
+	public function test_increase_push_event()
+	{
+		Queue::fake();
+		$product = factory(Product::class)->create([
+			'name' => 'Test product',
+			'amount' => 0
+		]);
+		$this->json('GET', '/api/products/' . $product->id . '/return', []);
+		Queue::assertPushed(EmailNotifications::class);
+	}
+
+	public function test_decrease_push_event()
+	{
+		Queue::fake();
+		$product = factory(Product::class)->create([
+			'name' => 'Test product',
+			'amount' => 0
+		]);
+		$this->json('GET', '/api/products/' . $product->id . '/sell', []);
+		Queue::assertPushed(EmailNotifications::class);
 	}
 }
