@@ -43,7 +43,7 @@ class QueueShow extends Command
 		$start = $this->argument('start');
 		$stop = $this->argument('stop');
 		$redis = Redis::connection();
-		$queueItems = $redis->lrange('laravel_catalog_database_queues:default', $start, $stop);
+		$queueItems = $redis->lrange('queues:default', $start, $stop);
 		dd($queueItems);
     }
 }

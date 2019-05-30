@@ -29,6 +29,8 @@ class CreateCategoryProductTable extends Migration
 				->on('products')
 				->onDelete('cascade');
 
+			$table->index(['category_id', 'product_id']);
+
             $table->timestamps();
         });
     }
@@ -40,6 +42,6 @@ class CreateCategoryProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories_products');
+        Schema::dropIfExists('category_product');
     }
 }

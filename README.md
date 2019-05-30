@@ -18,7 +18,10 @@
 
 # Дока
 - докер
+- docker-compose exec --user 1000 php composer install
 - php artisan migrate
+- php artisan passport:install
+- php artisan key:generate
 - php artisan user:register vasily vasily@mail.ru 112233
 - php artisan passport:client --password
 - проще всего залогиниться через swagger, в username надо указать email

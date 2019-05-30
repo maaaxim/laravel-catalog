@@ -183,7 +183,7 @@ paths:
     get:
       tags:
       - "product"
-      summary: "Sell product (increase amount by 1)"
+      summary: "Sell product (decrease amount by 1)"
       description: ""
       consumes:
       - "application/json"
@@ -202,7 +202,7 @@ paths:
     get:
       tags:
       - "product"
-      summary: "Sell product (decrease amount by 1)"
+      summary: "Sell product (increase amount by 1)"
       description: ""
       consumes:
       - "application/json"
