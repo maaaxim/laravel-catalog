@@ -33,6 +33,7 @@ services:
     ports:
       - 5432:5432
     volumes:
+      - ./.docker/conf/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./.docker/postgresql-data:/var/lib/postgresql/data
 
   mail:
