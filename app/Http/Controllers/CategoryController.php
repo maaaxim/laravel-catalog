@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
 		$categories = DB::table('categories')
-			->paginate(10); // @TODO magic-number
+			->paginate(10);
 		return response(CategoryResource::collection($categories));
     }
 

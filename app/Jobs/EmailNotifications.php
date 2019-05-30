@@ -52,7 +52,7 @@ class EmailNotifications implements ShouldQueue
 			$email = new ProductSold($this->product);
 			echo "sold";
 		}
-		$recipient['email'] = 'maxim@test.ru'; // @TODO hardcode
+		$recipient['email'] = 'any@email.ru';
 		Mail::to($recipient['email'])->send($email);
     }
 }
