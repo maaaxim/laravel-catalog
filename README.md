@@ -17,10 +17,12 @@
 
 
 # Дока
-1. докер
-2. паспорт
-3. php artisan queue:table
-4. php artisan migrate
-5. docker-compose exec --user 1000 php php artisan queue:listen
-6. docker-compose exec --user 1000 php php artisan queue:show 0 -- -1
-7. docker-compose exec --user 1000 php php artisan user:register vasia vasia vasia
+- докер
+- php artisan migrate
+- php artisan user:register vasily vasily@mail.ru 112233
+- php artisan passport:client --password
+- проще всего залогиниться через swagger, в username надо указать email
+- docker-compose exec --user 1000 php php artisan queue:listen
+- docker-compose exec --user 1000 php php artisan queue:show 0 -- -1
+- docker-compose exec --user 1000 php php artisan user:register vasia vasia vasia
+- ./vendor/bin/phpunit
