@@ -1,7 +1,8 @@
 # Инструкция
 - Клонируем репозиторий: `git@github.com:maaaxim/laravel-catalog.git`
+- Переходим в директорию проекта: `cd laravel-catalog`
 - Создаем файл окружения: `cp .env.example .env`
-- Запускаем docker-окружение: `docker-compose up -d `
+- Запускаем docker-окружение: `docker-compose up -d`
 - Переходим внутрь контейнера с приложением: `docker-compose exec --user 1000 php bash`
 - Установка composer: `composer install`
 - `php artisan key:generate`

@@ -14,10 +14,10 @@ class CreateCategoryProductTable extends Migration
     public function up()
     {
         Schema::create('category_product', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
 
-            $table->integer('category_id');
-            $table->integer('product_id');
+            $table->bigInteger('category_id');
+            $table->bigInteger('product_id');
 
 			$table->foreign('category_id')
 				->references('id')
