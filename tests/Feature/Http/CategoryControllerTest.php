@@ -186,4 +186,26 @@ class CategoryControllerTest extends HasAuthControllerTest
 			'message' => 'The given data was invalid.',
 		]);
 	}
+
+	public function test_put_resource_id_not_number()
+	{
+		$response = $this->json('POST', '/api/categories/text', [
+			'name' => 'Some info',
+		], $this->authorizedHeader);
+		$response->assertStatus(404);
+		$response->assertJsonFragment([
+			'message' => 'Route not exist.',
+		]);
+	}
+
+	public function test_put_resource_id_not_found()
+	{
+		$response = $this->json('PUT', '/api/categories/1', [
+			'name' => 'Some info',
+		], $this->authorizedHeader);
+		$response->assertStatus(404);
+		$response->assertJsonFragment([
+			'message' => 'Resource not found.',
+		]);
+	}
 }

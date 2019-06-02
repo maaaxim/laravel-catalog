@@ -3,9 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -28,12 +30,13 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     */
+	/**
+	 * Report or log an exception.
+	 *
+	 * @param  \Exception $exception
+	 * @return void
+	 * @throws Exception
+	 */
     public function report(Exception $exception)
     {
         parent::report($exception);
@@ -51,9 +54,13 @@ class Handler extends ExceptionHandler
 		if ($request->is('api/*')) {
 			switch (get_class($exception)) {
 				case AuthorizationException::class:
-					return response()->json(['error' => 'Forbidden'], 403);
+					return response()->json(['message' => 'Forbidden.'], 403);
 				case MethodNotAllowedHttpException::class:
-					return response()->json(['error' => 'Not allowed'], 405);
+					return response()->json(['message' => 'Not allowed.'], 405);
+				case NotFoundHttpException::class:
+					return response()->json(['message' => 'Route not exist.'], 404);
+				case ModelNotFoundException::class:
+					return response()->json(['message' => 'Resource not found.'], 404);
 			}
 		}
 
