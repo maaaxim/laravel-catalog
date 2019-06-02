@@ -140,4 +140,50 @@ class CategoryControllerTest extends HasAuthControllerTest
 		$response->assertStatus(200);
 		$response->assertJsonStructure([]);
 	}
+
+	public function test_store_empty_name()
+	{
+		$response = $this->json('POST', '/api/categories', [
+			'name' => '',
+		], $this->authorizedHeader);
+		$response->assertStatus(422);
+		$response->assertJsonFragment([
+			'message' => 'The given data was invalid.',
+		]);
+	}
+
+	public function test_store_wrong_format_name()
+	{
+		$response = $this->json('POST', '/api/categories', [
+			'name' => rand(0, 100000),
+		], $this->authorizedHeader);
+		$response->assertStatus(422);
+		$response->assertJsonFragment([
+			'message' => 'The given data was invalid.',
+		]);
+	}
+
+	public function test_put_empty_name()
+	{
+		$category = factory(Category::class)->create();
+		$response = $this->json('PUT', '/api/categories/' . $category->id, [
+			'name' => '',
+		], $this->authorizedHeader);
+		$response->assertStatus(422);
+		$response->assertJsonFragment([
+			'message' => 'The given data was invalid.',
+		]);
+	}
+
+	public function test_put_wrong_format_name()
+	{
+		$category = factory(Category::class)->create();
+		$response = $this->json('PUT', '/api/categories/' . $category->id, [
+			'name' => rand(0, 100000),
+		], $this->authorizedHeader);
+		$response->assertStatus(422);
+		$response->assertJsonFragment([
+			'message' => 'The given data was invalid.',
+		]);
+	}
 }
