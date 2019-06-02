@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use Illuminate\Console\Command;
+use App\Console\Command;
+use App\Handlers\Console\CreateUserHandler;
+use Illuminate\Validation\ValidationException;
 
 class UserRegister extends Command
 {
@@ -13,7 +14,6 @@ class UserRegister extends Command
      * @var string
      */
     protected $signature = 'user:register
-                            {username : User name}
                             {email : User e-mail}
                             {password : User password}';
 
@@ -34,21 +34,23 @@ class UserRegister extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+	/**
+	 * Execute the console command.
+	 *
+	 * @param CreateUserHandler $handler
+	 * @return mixed
+	 */
+    public function handle(CreateUserHandler $handler)
     {
 		$this->info("Creating new user...");
-
-		$user = new User();
-		$user->name = $this->argument('username');
-		$user->email = $this->argument('email');
-		$user->password = bcrypt($this->argument('password'));
-		$user->save();
-
-		$this->info("User created successfully!");
+		try {
+			$handler->setEmail($this->argument('email'));
+			$handler->setPassword($this->argument('password'));
+			$handler->handle();
+			$this->info("User created successfully!");
+		} catch (ValidationException $exception) {
+			$this->displayErrors($exception->errors());
+			$this->error("User was not created!");
+		}
     }
 }

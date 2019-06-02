@@ -8,12 +8,12 @@
 - `php artisan key:generate`
 - `php artisan migrate`
 - Создаем Client ID & Client secret для OAuth2.0 grant type password: `php artisan passport:client --password`
-- Регистрируем юзера: `php artisan user:register vasily vasily@mail.ru 112233`
+- Регистрируем юзера: `php artisan user:register vasily@mail.ru 112233`
 - Заполнение каталога: `php artisan db:seed --class=CatalogSeeder`
 - Можно авторизоваться через swagger, в username надо указать email (там же есть примеры json для всех методов): http://localhost:600/swagger/index.html 
 - Показать список команд в очереди: `php artisan queue:show 0 -- -1`
 - Запуск демона: `artisan queue:listen`
-- Запуск тестов `./vendor/bin/phpunit# Инструкция`
+- Запуск тестов `./vendor/bin/phpunit`
 
 # Затрачено времени
 * Инфраструктура: docker: php, mysql, redis, почта = 1ч
