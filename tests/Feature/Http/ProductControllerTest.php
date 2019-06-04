@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Category;
 use App\Jobs\EmailNotifications;
 use App\Product;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -25,6 +26,7 @@ class ProductControllerTest extends HasAuthControllerTest
 		$response = $this->json('POST', '/api/products', [
 			'name' => 'Test product',
 			'amount' => 100,
+			'category' => [$category = factory(Category::class)->create()->id]
 		], $this->authorizedHeader);
 		$response->assertStatus(200);
 		$response->assertJsonFragment([
@@ -52,6 +54,7 @@ class ProductControllerTest extends HasAuthControllerTest
 		$response = $this->json('PUT', '/api/products/' . $product->id, [
 			'name' => 'Test product',
 			'amount' => 100,
+			'category' => [$category = factory(Category::class)->create()->id]
 		], $this->authorizedHeader);
 		$response->assertStatus(200);
 		$response->assertJsonFragment([
