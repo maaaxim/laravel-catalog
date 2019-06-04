@@ -242,6 +242,10 @@ definitions:
       name:
         type: "string"
         example: "Shirt Nike test XL"
+      category:
+        type: "array"
+        items:
+          type: "integer"
       amount:
         type: "integer"
         format: "int64"

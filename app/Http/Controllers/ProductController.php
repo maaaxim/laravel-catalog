@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ApplicationException;
+use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Jobs\EmailNotifications;
 use App\Product;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -15,41 +16,46 @@ class ProductController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\Response
+	 * @param ProductRequest $request
+	 * @return Response
 	 * @throws ApplicationException
 	 */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
 		DB::beginTransaction();
-
 		try {
 			$product = Product::create($request->all());
 			if ($product->id) {
-				$product->categories()->sync([$request->category]);
+				$product->categories()->sync($request->category);
 			}
 		} catch (Exception $e) {
 			DB::rollback();
 			throw new ApplicationException("Can't create product");
 		}
-
 		DB::commit();
-
 		return response(new ProductResource($product));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param ProductRequest $request
+	 * @param  \App\Product $product
+	 * @return Response
+	 * @throws ApplicationException
+	 */
+    public function update(ProductRequest $request, Product $product)
     {
+		DB::beginTransaction();
 		$product->name = $request->name;
 		$product->amount = $request->amount;
-		$product->save();
+		if($product->save()){
+			$product->categories()->sync($request->category);
+			DB::commit();
+		} else {
+			DB::rollback();
+			throw new ApplicationException("Can't update product");
+		}
 		return response(new ProductResource($product));
     }
 
@@ -57,7 +63,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Product  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -71,7 +77,7 @@ class ProductController extends Controller
 
 	/**
 	 * @param Product $product
-	 * @return \Illuminate\Http\Response
+	 * @return Response
 	 */
     public function sellItem(Product $product)
 	{
@@ -86,7 +92,7 @@ class ProductController extends Controller
 
 	/**
 	 * @param Product $product
-	 * @return \Illuminate\Http\Response
+	 * @return Response
 	 */
 	public function returnItem(Product $product)
 	{

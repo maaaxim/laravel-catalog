@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NumericList;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -15,6 +16,11 @@ class ProductRequest extends FormRequest
     {
 		return [
 			'name' => 'required|string',
+			'category' => [
+				'required',
+				new NumericList(),
+				'exists:categories,id'
+			],
 			'amount' => 'numeric',
 		];
     }
