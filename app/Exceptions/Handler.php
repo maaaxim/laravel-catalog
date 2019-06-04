@@ -61,6 +61,8 @@ class Handler extends ExceptionHandler
 					return response()->json(['message' => 'Route not exist.'], 404);
 				case ModelNotFoundException::class:
 					return response()->json(['message' => 'Resource not found.'], 404);
+				case ApplicationException::class:
+					return response()->json(['message' => $exception->getMessage()], 500);
 			}
 		}
 

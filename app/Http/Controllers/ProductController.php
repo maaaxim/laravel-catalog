@@ -2,22 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApplicationException;
 use App\Http\Resources\ProductResource;
 use App\Jobs\EmailNotifications;
 use App\Product;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 * @throws ApplicationException
+	 */
     public function store(Request $request)
     {
-		$product = Product::create($request->all());
+		DB::beginTransaction();
+
+		try {
+			$product = Product::create($request->all());
+			if ($product->id) {
+				$product->categories()->sync([$request->category]);
+			}
+		} catch (Exception $e) {
+			DB::rollback();
+			throw new ApplicationException("Can't create product");
+		}
+
+		DB::commit();
+
 		return response(new ProductResource($product));
     }
 

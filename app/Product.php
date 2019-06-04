@@ -9,11 +9,11 @@ class Product extends Model
 	protected $fillable = ['name', 'amount'];
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function category()
+	public function categories()
 	{
-		return $this->belongsTo(
+		return $this->belongsToMany(
 			Category::class,
 			'category_product',
 			'product_id',
