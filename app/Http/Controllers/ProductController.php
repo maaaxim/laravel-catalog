@@ -51,11 +51,11 @@ class ProductController extends Controller
 		$product->amount = $request->amount;
 		if($product->save()){
 			$product->categories()->sync($request->category);
-			DB::commit();
 		} else {
 			DB::rollback();
 			throw new ApplicationException("Can't update product");
 		}
+		DB::commit();
 		return response(new ProductResource($product));
     }
 

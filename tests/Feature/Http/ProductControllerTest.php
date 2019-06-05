@@ -23,17 +23,37 @@ class ProductControllerTest extends HasAuthControllerTest
 
 	public function test_can_store_product()
 	{
+		$category = factory(Category::class)->create();
 		$response = $this->json('POST', '/api/products', [
 			'name' => 'Test product',
 			'amount' => 100,
-			'category' => [$category = factory(Category::class)->create()->id]
+			'category' => [$category->id]
 		], $this->authorizedHeader);
+		$jsonDecodedResponse = json_decode($response->getContent());
 		$response->assertStatus(200);
 		$response->assertJsonFragment([
 			'name' => 'Test product',
 			'amount' => 100,
 		]);
 		$this->assertDatabaseHas('products', [
+			'name' => 'Test product',
+			'amount' => 100,
+		]);
+		$this->assertDatabaseHas('category_product', [
+			'product_id' => $jsonDecodedResponse->id,
+			'category_id' => $category->id
+		]);
+	}
+
+	public function test_cant_store_with_wrong_category()
+	{
+		$response = $this->json('POST', '/api/products', [
+			'name' => 'Test product',
+			'amount' => 100,
+			'category' => [123]
+		], $this->authorizedHeader);
+		$response->assertJsonFragment(['The selected category is invalid.',]);
+		$this->assertDatabaseMissing('products', [
 			'name' => 'Test product',
 			'amount' => 100,
 		]);
@@ -51,11 +71,13 @@ class ProductControllerTest extends HasAuthControllerTest
 	public function test_can_put_product()
 	{
 		$product = factory(Product::class)->create();
+		$category = factory(Category::class)->create();
 		$response = $this->json('PUT', '/api/products/' . $product->id, [
 			'name' => 'Test product',
 			'amount' => 100,
-			'category' => [$category = factory(Category::class)->create()->id]
+			'category' => [$category->id]
 		], $this->authorizedHeader);
+		$jsonDecodedResponse = json_decode($response->getContent());
 		$response->assertStatus(200);
 		$response->assertJsonFragment([
 			'name' => 'Test product',
@@ -64,6 +86,10 @@ class ProductControllerTest extends HasAuthControllerTest
 		$this->assertDatabaseHas('products', [
 			'name' => 'Test product',
 			'amount' => 100,
+		]);
+		$this->assertDatabaseHas('category_product', [
+			'product_id' => $jsonDecodedResponse->id,
+			'category_id' => $category->id
 		]);
 	}
 
@@ -80,6 +106,7 @@ class ProductControllerTest extends HasAuthControllerTest
 		$this->assertDatabaseMissing('products', [
 			'id' => $product->id,
 		]);
+		// проверка пивот @TODO
 	}
 
 	public function test_authorized_delete_product()
