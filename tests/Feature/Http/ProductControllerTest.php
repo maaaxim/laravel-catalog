@@ -106,7 +106,9 @@ class ProductControllerTest extends HasAuthControllerTest
 		$this->assertDatabaseMissing('products', [
 			'id' => $product->id,
 		]);
-		// проверка пивот @TODO
+		$this->assertDatabaseMissing('category_product', [
+			'product_id' => $product->id,
+		]);
 	}
 
 	public function test_authorized_delete_product()
