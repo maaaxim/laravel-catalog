@@ -7,6 +7,7 @@
 - Установка composer: `composer install`
 - `php artisan key:generate`
 - `php artisan migrate`
+- Установка passport: `php artisan passport:install`
 - Создаем Client ID & Client secret для OAuth2.0 grant type password: `php artisan passport:client --password`
 - Регистрируем юзера: `php artisan user:register vasily@mail.ru 112233`
 - Заполнение каталога: `php artisan db:seed --class=CatalogSeeder`
