@@ -13,7 +13,7 @@
 - Заполнение каталога: `php artisan db:seed --class=CatalogSeeder`
 - Можно авторизоваться через swagger, в username надо указать email (там же есть примеры json для всех методов): http://localhost:600/swagger/index.html 
 - Показать список команд в очереди: `php artisan queue:show 0 -- -1`
-- Запуск демона: `artisan queue:listen`
+- Запуск демона: `php artisan queue:listen`
 - Запуск тестов `./vendor/bin/phpunit`
 
 # Затрачено времени
